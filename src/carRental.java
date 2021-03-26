@@ -60,8 +60,8 @@ public class carRental {
                 carMenu();
                 break;
             case 2:
-                //addCar();
-                //????
+                addCarfunction(input);
+                carMenu();
                 break;
             case 3:
                 System.out.println("Choose the car you wish you edit: ");
@@ -90,7 +90,21 @@ public class carRental {
         }
     }
 
-
+    public static void addCarfunction(Scanner input){
+        System.out.println("Add new car:\nEnter car type: ");
+        String carType=input.next();
+        System.out.println("Enter car brand ");
+        String brand=input.next();
+        System.out.println("Enter model: ");
+        String model=input.next();
+        System.out.println("Enter Number Plate: ");
+        String numberPlate=input.next();
+        System.out.println("Enter first registration date: ");
+        int firstRegDate=input.nextInt();
+        System.out.println("Enter Kilometers driven; ");
+        int kmDriven=input.nextInt();
+        addCar(carType,brand,model,numberPlate,firstRegDate,kmDriven);
+    }
 
     // Car methods.
     public static void updateCar(int selectedCarID, String carType, String brand, String model, String numberPlate, int firstRegYear, int kmDriven){
