@@ -6,8 +6,8 @@ public class carRental {
     static final String DATABASE_URL = "JDBC:MYSQL://LOCALHOST:3306/carrental";
     static Connection CON;
     static Statement s;
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
         try{
             CON = DriverManager.getConnection(DATABASE_URL,"root", "x5hxnqMP#Zu3&6x@!T5muQ");
             s = CON.createStatement();
@@ -26,7 +26,7 @@ public class carRental {
         }
 
 
-
+        carMenu();
         //showBookings();
         //addCar();
         //deleteCar(2);
@@ -57,14 +57,30 @@ public class carRental {
         switch (valg) {
             case 1:
                 showCars();
+                carMenu();
                 break;
             case 2:
                 //addCar();
                 //????
                 break;
             case 3:
+                System.out.println("Choose the car you wish you edit: ");
                 showCars();
-                //updateCar();
+                int selectedCarID = input.nextInt();
+                System.out.println("Car type: ");
+                String carType = input.next();
+                System.out.println("Brand: ");
+                String brand = input.next();
+                System.out.println("Model: ");
+                String model = input.next();
+                System.out.println("Enter Number Plate: ");
+                String numberPlate = input.next();
+                System.out.println("First year of registration: ");
+                int firstRegYear = input.nextInt();
+                System.out.println("Kilometer Driven: ");
+                int kmDriven = input.nextInt();
+                updateCar(selectedCarID, carType, brand, model, numberPlate, firstRegYear, kmDriven);
+                carMenu();
                 break;
             case 4:
                 showCars();
@@ -210,15 +226,47 @@ public class carRental {
         }
     }
 
-    public static void addACustomer() {
-        String insstr = "INSERT INTO privatecustomer (firstName, lastName, zipCode, cityName, adress, mobileNr, email, driversLicenceNumber, CustomerSinceDate) VALUES(\"Kent\", \"Clark\", 2980, \"Kokkedal\", \"Hjortevej\", 23232, \"sads@eer\", 23213123, 20210101);";
+    public static void addACustomer(String firstName, String lastName, int zipCode, String cityName, String adress, int mobileNr, String email, int driversLicenceNumber, int customerSinceDate) {
+        String insstr = "INSERT INTO privatecustomer (firstName, lastName, zipCode, cityName, adress, mobileNr, email, driversLicenceNumber, CustomerSinceDate) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
         PreparedStatement preparedStatement;
         try {
             preparedStatement = CON.prepareStatement(insstr);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setInt(3, zipCode);
+            preparedStatement.setString(4, cityName);
+            preparedStatement.setString(5, adress);
+            preparedStatement.setInt(6, mobileNr);
+            preparedStatement.setString(7, email);
+            preparedStatement.setInt(8, driversLicenceNumber);
+            preparedStatement.setInt(9, customerSinceDate);
             preparedStatement.executeUpdate();
         } catch (SQLException sqlerr)   {
             System.out.println("fejl i insert=" + sqlerr.getMessage());
         }
+    }
+
+    public static void addDataToCustomer(Scanner scan) {
+        System.out.println("Indtast fornavn");
+        String firstName = scan.next();
+        System.out.println("Indtast efternavn");
+        String lastName = scan.next();
+        System.out.println("Indtast postnummer");
+        int zipCode = scan.nextInt();
+        System.out.println("Indtast bynavn");
+        String cityName = scan.next();
+        System.out.println("Indtast adresse");
+        String adress = scan.next();
+        System.out.println("Indtast mobile nummer");
+        int mobileNr = scan.nextInt();
+        System.out.println("Indtast email");
+        String email = scan.next();
+        System.out.println("Indtast kørekort");
+        int driversLicenceNumber = scan.nextInt();
+        System.out.println("Indtast hvornår kunden blev oprettet");
+        int customerSinceDate = scan.nextInt();
+
+        addACustomer(firstName, lastName, zipCode, cityName, adress, mobileNr, email, driversLicenceNumber, customerSinceDate);
     }
 
     public static void updateCustomer(int customerID, String firstName, String lastName, int zipCode, String cityname, String adress, int mobileNr, String email, int driversLicenseNumber, int CustomerSinceDate) {
